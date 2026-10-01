@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParkEase – Parking Slot Reservation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="bar">
+  <div class="logo"><i class="mark">P</i>ParkEase <span class="mode" id="mode"></span></div>
+  <nav id="nav">
+    <button data-p="home" class="on">Home</button><button data-p="slots">Parking Slots</button>
+    <button data-p="mine">My Reservation</button><button data-p="wait">Waiting List</button><button data-p="admin">Admin</button>
+  </nav>
+</div></header>
+<main>
+
+<section id="home" class="on">
+  <div class="hero"><h1>Find a spot. Reserve it. Park with no guesswork.</h1><p>ParkEase shows every slot in the lot in real time, so you always know what's open, what's taken, and where you stand in line when the lot is full.</p>
+  <div class="row"><button class="btn" onclick="go('slots')">View Parking Slots</button><button class="btn l" onclick="go('wait')">Check Waiting List</button></div></div>
+  <div class="stats" id="stats"></div>
+</section>
+
+<section id="slots">
+  <h2>Parking Slots</h2><p class="sub">Enter your name, then tap a green slot to reserve it. One slot per person.</p>
+  <div class="card">
+    <div class="row"><input id="uname" placeholder="Your name" maxlength="30" style="flex:1;min-width:180px">
+    <div class="legend"><span><i class="dot" style="background:var(--ok)"></i>Available</span><span><i class="dot" style="background:var(--warn)"></i>Reserved</span><span><i class="dot" style="background:var(--bad)"></i>Occupied</span></div></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="mine">
+  <h2>My Reservation</h2><p class="sub">Look up your booking or cancel it.</p>
+  <div class="card"><div class="row"><input id="mname" placeholder="Your name" style="flex:1;min-width:180px"><button class="btn" onclick="renderMine()">Check</button></div><div id="mineOut"></div></div>
+</section>
+
+<section id="wait">
+  <h2>Waiting List</h2><p class="sub">First come, first served. You can join only when every slot is taken.</p>
+  <div class="card"><div class="row"><input id="wname" placeholder="Your name" maxlength="30" style="flex:1;min-width:180px"><button class="btn o" id="joinBtn" onclick="joinQueue()">Join waiting list</button></div>
+  <div id="waitOut"></div></div>
+</section>
+
+<section id="admin">
+  <div id="login" class="card" style="max-width:420px;margin:auto"><h2>Admin Login</h2><p class="sub">Enter the admin passcode.</p>
+    <div class="row"><input id="pass" type="password" placeholder="Passcode" style="flex:1" onkeydown="if(event.key==='Enter')login()"><button class="btn" onclick="login()">Enter</button></div></div>
+  <div id="panel" style="display:none">
+    <div class="row"><h2 style="margin:0 auto 0 0">Admin Dashboard</h2><button class="btn l" onclick="logout()">Log out</button></div>
+    <div class="stats" id="astats"></div>
+
+    <div class="card"><h3 style="margin-top:0">➕ Add parking slot</h3>
+      <div class="row"><select id="secSel" onchange="suggest()"></select>
+      <input id="secNew" placeholder="New section (e.g. VIP)" oninput="suggest()">
+      <input id="numIn" placeholder="Number or name (e.g. 6, Visitor)">
+      <button class="btn g" onclick="addSlot()">Add slot</button></div>
+      <small class="sub">Pick an existing section to auto-fill the next number, or type a new section. Result looks like A6, VIP1, or Visitor.</small></div>
+
+    <div class="card"><h3 style="margin-top:0">🚗 All slots &amp; reservations</h3>
+      <div class="row"><input id="q" placeholder="Search slot label…" oninput="renderAdmin()" style="flex:1;min-width:160px">
+      <select id="sortBy" onchange="renderAdmin()"><option value="label">Sort: Label</option><option value="status">Sort: Status</option></select></div>
+      <div class="tbl"><table><thead><tr><th>Slot</th><th>Status</th><th>Reserved by</th><th>Actions</th></tr></thead><tbody id="aBody"></tbody></table></div></div>
+
+    <div class="card"><h3 style="margin-top:0">⏳ Waiting list moderation</h3><div id="aWait"></div></div>
+  </div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
